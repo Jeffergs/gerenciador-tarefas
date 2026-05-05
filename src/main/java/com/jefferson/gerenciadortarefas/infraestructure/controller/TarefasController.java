@@ -2,6 +2,7 @@ package com.jefferson.gerenciadortarefas.infraestructure.controller;
 
 import com.jefferson.gerenciadortarefas.infraestructure.busness.TarefasService;
 import com.jefferson.gerenciadortarefas.infraestructure.busness.dto.TarefasDTO;
+import com.jefferson.gerenciadortarefas.infraestructure.enums.StatusNotificacaoEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,23 @@ public class TarefasController {
     public ResponseEntity<List<TarefasDTO>> buscaTarefasPorEmail(@RequestHeader ("Authorization")
                                                  String token) {
         return ResponseEntity.ok(tarefasService.buscaTarefasPorEmail(token));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletarTarefaPorId (@RequestParam ("id") String id){
+        tarefasService.deletarTarefaPorId(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<TarefasDTO> alteraStatusNotificacao(@RequestParam("status")StatusNotificacaoEnum status,
+                                                              @RequestParam("id") String id){
+        return ResponseEntity.ok(tarefasService.alterarStatus(status, id));
+    }
+
+    @PutMapping
+    public ResponseEntity<TarefasDTO> updateTarefas(@RequestBody TarefasDTO dto,
+                                                    @RequestParam("id") String id){
+        return ResponseEntity.ok(tarefasService.updateTarefas(dto, id));
     }
 }
